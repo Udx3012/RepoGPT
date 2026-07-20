@@ -44,7 +44,7 @@ export async function embedChunks(texts: string[]): Promise<number[][]> {
       });
 
       if (Array.isArray(response.embeddings)) {
-        response.embeddings.forEach((emb) => {
+        response.embeddings.forEach((emb: any) => {
           if (emb.values) results.push(emb.values);
         });
       }

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsc -b && nodemon dist/server.js",
-    "build": "tsc -b",
+    "build": "npm install && tsc -b",
     "start": "node dist/server.js"
   },
   "dependencies": {

@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3009;
 // Enable CORS
 app.use(
   cors({
-    origin: (origin, cb) => {
+    origin: (origin: any, cb: any) => {
       if (!origin) return cb(null, true);
       const allowed = [
         /^http:\/\/(localhost|127\.0\.0\.1):\d+$/,
@@ -31,7 +31,7 @@ app.use(
 app.use(express.json());
 
 // API Health Check
-app.get("/health", (req, res) => {
+app.get("/health", (req: any, res: any) => {
   res.json({ status: "healthy", timestamp: new Date().toISOString() });
 });
 

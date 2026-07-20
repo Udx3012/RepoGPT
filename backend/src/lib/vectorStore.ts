@@ -163,7 +163,7 @@ export async function querySimilarChunks(
           score,
         };
       })
-      .sort((a, b) => b.score - a.score)
+      .sort((a: { score: number }, b: { score: number }) => b.score - a.score)
       .slice(0, topK);
 
     return ranked;

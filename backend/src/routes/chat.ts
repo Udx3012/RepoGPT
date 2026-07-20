@@ -63,7 +63,7 @@ router.post("/query", async (req: Request, res: Response) => {
 
       if (!msgError && messages) {
         conversationContext = messages
-          .map((m) => `User: ${m.query}\nAssistant: ${m.answer}`)
+          .map((m: any) => `User: ${m.query}\nAssistant: ${m.answer}`)
           .join("\n\n");
       }
     }
@@ -95,7 +95,7 @@ router.post("/query", async (req: Request, res: Response) => {
 
         if (coreChunks && coreChunks.length > 0) {
           const coreText = coreChunks
-            .map((c) => `--- File (Core Docs / Entrypoint): ${c.file_path} ---\n${c.content}`)
+            .map((c: any) => `--- File (Core Docs / Entrypoint): ${c.file_path} ---\n${c.content}`)
             .join("\n\n");
           chunksTextList.unshift(coreText);
         }

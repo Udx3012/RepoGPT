@@ -1,6 +1,6 @@
 # 🤖 RepoGPT — Ask Grounded Questions Over GitHub Codebases
 
-**RepoGPT** is a production-grade codebase intelligence assistant that allows you to chat with any GitHub repository in real-time. It retrieves relevant file chunks and repository structures using Google Gemini embeddings and answers questions with fully grounded, contextual codebase knowledge (powered by Google Gemini 1.5 Flash).
+**RepoGPT** is a production-grade codebase intelligence assistant that allows you to chat with any GitHub repository in real-time. It retrieves relevant file chunks and repository structures using Google Gemini embeddings and answers questions with fully grounded, contextual codebase knowledge (powered by Google Gemini Flash).
 
 The application requires **no authentication wall** (opens directly to the core features via guest-sessions) and operates on a **100% free and cloud-first stack**.
 

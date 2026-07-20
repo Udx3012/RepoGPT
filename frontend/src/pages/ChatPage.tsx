@@ -49,15 +49,31 @@ interface Message {
   a: string;
 }
 
-const DEFAULT_SESSION = {
-  access_token: "default-token",
-  user: {
-    id: "default-user",
-    email: "user@repogpt.local"
+function getOrCreateGuestSession() {
+  const KEY = "repogpt_guest_session_id";
+  let id = "";
+  if (typeof window !== "undefined" && window.localStorage) {
+    id = localStorage.getItem(KEY) || "";
+    if (!id) {
+      id = "guest_" + (typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 15) + Date.now().toString(36));
+      localStorage.setItem(KEY, id);
+    }
+  } else {
+    id = "guest_temp";
   }
-};
+  return {
+    access_token: `token_${id}`,
+    user: {
+      id,
+      email: `${id}@guest.repogpt`
+    }
+  };
+}
 
 const ChatPage = () => {
+  // Dynamic persistent guest session per user/browser profile
+  const [session] = useState(getOrCreateGuestSession);
+
   // Mode: "url" or "username"
   const [searchMode, setSearchMode] = useState<"url" | "username">("url");
   const [repoUrl, setRepoUrl] = useState("");
@@ -80,9 +96,6 @@ const ChatPage = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [sendingQuery, setSendingQuery] = useState(false);
   const [repoToDelete, setRepoToDelete] = useState<string | null>(null);
-
-  // Default session state so all indexed repos and chats are immediately visible
-  const session = DEFAULT_SESSION;
 
   // Vanta Waves background callback ref
   const vantaEffect = useRef<any>(null);
@@ -236,13 +249,7 @@ const ChatPage = () => {
     }, 2000);
 
     try {
-      const headers = {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${session?.access_token || ""}`,
-        },
-      };
-      const res = await axios.post(`${API_URL}/github/index`, { repoUrl: targetUrl }, headers);
+      const res = await axios.post(`${API_URL}/github/index`, { repoUrl: targetUrl }, getHeaders());
       setIndexingStep(indexingStepsList.length - 1);
 
       // Short delay to show completed step

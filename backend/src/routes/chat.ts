@@ -77,11 +77,6 @@ router.post("/query", async (req: Request, res: Response) => {
       const queryVector = await embedQuery(query);
       let chunks = await querySimilarChunks(queryVector, repoName, userId, 10);
 
-      // Fallback: if no chunks found for this specific userId, query under default-user
-      if (chunks.length === 0 && userId !== "default-user") {
-        chunks = await querySimilarChunks(queryVector, repoName, "default-user", 10);
-      }
-
       let chunksTextList = chunks.map((c) => `--- File: ${c.filePath} ---\n${c.text}`);
 
       // 2b. If structural/summary query, fetch and append core manifests & docs (README, Cargo.toml, package.json, main files)
@@ -89,6 +84,7 @@ router.post("/query", async (req: Request, res: Response) => {
         const { data: coreChunks } = await supabase
           .from("repo_chunks")
           .select("content, file_path")
+          .eq("user_id", userId)
           .eq("repo_name", repoName)
           .or("file_path.ilike.%readme.md%,file_path.ilike.%cargo.toml%,file_path.ilike.%package.json%,file_path.ilike.%main.rs%,file_path.ilike.%main.ts%,file_path.ilike.%main.py%,file_path.ilike.%app.py%,file_path.ilike.%server.ts%")
           .limit(10);
@@ -108,6 +104,7 @@ router.post("/query", async (req: Request, res: Response) => {
         const { data: repoTree } = await supabase
           .from("repo_trees")
           .select("tree")
+          .eq("user_id", userId)
           .eq("repo_name", repoName)
           .maybeSingle();
 

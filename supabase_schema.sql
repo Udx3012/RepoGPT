@@ -46,3 +46,22 @@ create index if not exists idx_chats_user on chats(user_id);
 create index if not exists idx_messages_chat on messages(chat_id);
 create index if not exists idx_repo_trees_user on repo_trees(user_id);
 create index if not exists idx_repo_chunks_search on repo_chunks(user_id, repo_name);
+
+-- 6. Enable Row Level Security (RLS)
+alter table chats enable row level security;
+alter table messages enable row level security;
+alter table repo_trees enable row level security;
+alter table repo_chunks enable row level security;
+
+-- 7. Add RLS Policies
+create policy "Users can manage their own chats" on chats
+  for all using (auth.uid()::text = user_id);
+
+create policy "Users can manage their own messages" on messages
+  for all using (auth.uid()::text = user_id);
+
+create policy "Users can manage their own repo_trees" on repo_trees
+  for all using (auth.uid()::text = user_id);
+
+create policy "Users can manage their own repo_chunks" on repo_chunks
+  for all using (auth.uid()::text = user_id);

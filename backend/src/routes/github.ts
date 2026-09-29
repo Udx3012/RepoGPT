@@ -110,7 +110,16 @@ router.post("/index", async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     console.error("Failed to index repository:", error);
-    return res.status(500).json({ error: error.message || "Failed to index repository." });
+    let errMsg = error?.message || "Failed to index repository.";
+    try {
+      const parsed = JSON.parse(errMsg);
+      if (parsed?.error?.message) {
+        errMsg = parsed.error.message;
+      }
+    } catch {
+      // not JSON
+    }
+    return res.status(500).json({ error: errMsg });
   }
 });
 

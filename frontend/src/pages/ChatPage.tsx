@@ -228,7 +228,14 @@ const ChatPage = () => {
       setSearchedRepos(res.data.repos || []);
     } catch (err: any) {
       console.error("Failed to fetch repos:", err);
-      alert(err.response?.data?.error || err.message || "Failed to search GitHub repositories.");
+      let errMsg = err.response?.data?.error || err.message || "Failed to search GitHub repositories.";
+      if (typeof errMsg === "string" && errMsg.startsWith("{")) {
+        try {
+          const parsed = JSON.parse(errMsg);
+          if (parsed?.error?.message) errMsg = parsed.error.message;
+        } catch {}
+      }
+      alert(errMsg);
     } finally {
       setSearchingRepos(false);
     }
@@ -266,7 +273,14 @@ const ChatPage = () => {
       clearInterval(interval);
       setIsIndexing(false);
       console.error("Indexing failed:", err);
-      alert(err.response?.data?.error || "Failed to index repository.");
+      let errMsg = err.response?.data?.error || err.message || "Failed to index repository.";
+      if (typeof errMsg === "string" && errMsg.startsWith("{")) {
+        try {
+          const parsed = JSON.parse(errMsg);
+          if (parsed?.error?.message) errMsg = parsed.error.message;
+        } catch {}
+      }
+      alert(errMsg);
     }
   };
 

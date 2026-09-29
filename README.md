@@ -26,7 +26,7 @@ The application requires **no authentication wall** (opens directly to the core 
 
 ### Backend
 - **Framework**: Node.js, Express, TypeScript
-- **AI Models**: Google Gemini (`text-embedding-004` and `gemini-1.5-flash`)
+- **AI Models**: Google Gemini (`text-embedding-004` and `gemini-2.5-flash`)
 - **Database**: Supabase (PostgreSQL)
 
 ---

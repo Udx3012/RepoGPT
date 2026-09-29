@@ -69,10 +69,3 @@ The application requires **no authentication wall** (opens directly to the core 
 3. Open `http://localhost:5173` in your browser.
 
 ---
-
-## 🎨 Visual Aesthetics & Rules
-
-RepoGPT implements premium design guidelines:
-- **Typography**: Uses high-contrast serif headers (`Playfair Display`) and sans-serif body copy (`Inter`).
-- **Readability**: Fully complies with subtext readability guidelines. Descriptions use `text-zinc-300` or `text-zinc-400` against dark backdrops with standard font weights.
-- **Glassmorphism**: Backdrop blur effects are blended with dark inputs and card grids.

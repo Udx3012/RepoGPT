@@ -94,7 +94,7 @@ export async function embedQuery(text: string): Promise<number[]> {
   try {
     const response = await callWithRetry(async () => {
       return await ai.models.embedContent({
-        model: "text-embedding-004",
+        model: "gemini-embedding-001",
         contents: text,
       });
     });
@@ -121,7 +121,7 @@ export async function embedChunks(texts: string[]): Promise<number[][]> {
       const batch = texts.slice(i, i + BATCH_SIZE);
       const response = await callWithRetry(async () => {
         return await ai.models.embedContent({
-          model: "text-embedding-004",
+          model: "gemini-embedding-001",
           contents: batch,
         });
       });
